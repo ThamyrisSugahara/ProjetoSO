@@ -17,6 +17,7 @@ UNIFESP - Universidade Federal de São Paulo
 | 150143  | Rian Silva Santos                |
 | 170597  | Tales dos Santos Fernandes       |
 | 169242  | Thamyris Nunes Sugahara          |
+| 158555  | Luís Felipe Salgado Mitidieri    |
 
 ---
 ## Etapas
