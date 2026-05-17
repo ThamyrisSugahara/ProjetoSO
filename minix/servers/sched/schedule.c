@@ -337,8 +337,9 @@ void init_scheduling(void)
 
 	balance_timeout = BALANCE_TIMEOUT * sys_hz();
 
-	if ((r = sys_setalarm(balance_timeout, 0)) != OK)
+	/*if ((r = sys_setalarm(balance_timeout, 0)) != OK)
 		panic("sys_setalarm failed: %d", r);
+	*/
 }
 
 /*===========================================================================*
@@ -352,18 +353,19 @@ void init_scheduling(void)
  */
 void balance_queues(void)
 {
-	struct schedproc *rmp;
+	/*struct schedproc *rmp;
 	int r, proc_nr;
 
 	for (proc_nr=0, rmp=schedproc; proc_nr < NR_PROCS; proc_nr++, rmp++) {
 		if (rmp->flags & IN_USE) {
 			if (rmp->priority > rmp->max_priority) {
-				rmp->priority -= 1; /* increase priority */
+				rmp->priority -= 1; 
 				schedule_process_local(rmp);
 			}
 		}
 	}
 
 	if ((r = sys_setalarm(balance_timeout, 0)) != OK)
-		panic("sys_setalarm failed: %d", r);
+		panic("sys_setalarm failed: %d", r); */
+	return;
 }
