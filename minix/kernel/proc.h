@@ -62,6 +62,8 @@ struct proc {
   clock_t p_virt_left;		/* number of ticks left on virtual timer */
   clock_t p_prof_left;		/* number of ticks left on profile timer */
 
+  clock_t p_creation_time 	/*Variável para armazenar o tempo exato da criação do processo*/
+
   u64_t p_cycles;		/* how many cycles did the process use */
   u64_t p_kcall_cycles;		/* kernel cycles caused by this proc (kcall) */
   u64_t p_kipc_cycles;		/* cycles caused by this proc (ipc) */
