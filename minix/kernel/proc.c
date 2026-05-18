@@ -1808,51 +1808,51 @@ static struct proc * pick_proc(void)
 		get_uptime(&tempo_instante);
 
 		for(comparado = rdy_head[q]; comparado != NULL; comparado = comparado->p_nextready){
-			//Tempo de vida do processo a ser comparado, ou seja, o tempo desde a sua criação
+			//Tempo de vida do processo a ser comparado, ou seja, o tempo desde a sua criacao
 			clock_t comparado_tempo_vida = tempo_instante - comparado->p_creation_time;
-			//Tempo consumido de CPU até o momento atual do processo a ser comparado
+			//Tempo consumido de CPU ate o momento atual do processo a ser comparado
 			clock_t comparado_tempo_consumido = comparado->p_user_time;
-			//Evitando cálculo com zero!
+			//Evitando calculo com zero
 			if(comparado_tempo_vida <= 0){
 				comparado_tempo_vida = 1;
 			}
 			
-			//conversão para tipos gigantes a fim evitar overflow durante os cálculos
+			//conversao para tipos gigantes a fim evitar overflow durante os calculos
 			unsigned long long convertido_comp_tempo_vida = (unsigned long long)comparado_tempo_vida;
 			unsigned long long convertido_comp_tempo_consumido = (unsigned long long)comparado_tempo_consumido;
 
-			//Se nenhum processo foi escolhido ainda, o primeiro da fila será o escolhido
+			//Se nenhum processo foi escolhido ainda, o primeiro da fila sera o escolhido
 			if(escolhido == NULL){
 				escolhido = comparado;
 			}else{
 				clock_t escolhido_tempo_vida = tempo_instante - escolhido->p_creation_time;
 				clock_t escolhido_tempo_consumido = escolhido->p_user_time;
-				//Novamente evitando o cálculo com zero!
+				//Novamente evitando o calculo com zero
 				if(escolhido_tempo_vida <= 0){
 					escolhido_tempo_vida = 1;
 				}
-				//conversão para tipos gigantes a fim evitar overflow durante os cálculos
+				//conversao para tipos gigantes a fim evitar overflow durante os calculos
 				unsigned long long convertido_escolhido_tempo_vida = (unsigned long long)escolhido_tempo_vida;
 				unsigned long long convertido_escolhido_tempo_consumido = (unsigned long long)escolhido_tempo_consumido;
 
-				/*Decisão do escalonamento baseado na regra de garantia, o cálculo é feito da seguinte forma: 
-					tempo_consumido_processo/tempo_vida_processo
-					Na condição abaixo para comparar esse índice dos dois processos foi feito uma uma multiplicação cruzada a fim de evitar cálculo com flutuantes,
-					logo, a comparação feita é
-					tempo_consumido_processo_a_ser_comparado*tempo_vida_processo_escolhido_atual < tempo_consumido_processo_escolhido_atual*tempo_vida_processo_a_ser_comparado
+				/*Decisao do escalonamento baseado na regra de garantia, o calculo eh feito da seguinte forma: 
+				*	tempo_consumido_processo/tempo_vida_processo
+				*	Na condicao abaixo para comparar esse indice dos dois processos foi feito uma uma multiplicacao cruzada a fim de evitar calculo com flutuantes,
+				*	logo, a comparacao feita eh
+				*	tempo_consumido_processo_a_ser_comparado*tempo_vida_processo_escolhido_atual < tempo_consumido_processo_escolhido_atual*tempo_vida_processo_a_ser_comparado
 				*/
 				if(convertido_comp_tempo_consumido*convertido_escolhido_tempo_vida < convertido_comp_tempo_vida*convertido_escolhido_tempo_consumido){
 					escolhido = comparado;
 				}
 			}
 		}
-		//Caso não encontre nenhum processo na fila atual, pule para a próxima fila de processos usuário
+		//Caso nao encontre nenhum processo na fila atual, pule para a proxima fila de processos usuario
 		if(escolhido == NULL){
 			continue;
 		}
 		rp = escolhido;
 
-		//Para processos do kernel foi mantida a lógica padrão
+		//Para processos do kernel foi mantida a logica padrao
 	}else{
 		if(!(rp = rdy_head[q])) {
 			TRACE(VF_PICKPROC, printf("cpu %d queue %d empty\n", cpuid, q););
