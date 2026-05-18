@@ -75,9 +75,9 @@ int do_fork(struct proc * caller, message * m_ptr)
   rpc->p_user_time = 0;		/* set all the accounting times to 0 */
   rpc->p_sys_time = 0;
   
-  clock_t tempo_criado; /*inicializa variável temporária para armazenar o tempo atual do clock*/
-  get_uptime(&tempo_criado); /*Função do sistema que obtém o tempo de clock no instante em que é chamado*/
-  rpc->p_creation_time = tempo_criado; /*Inicializando a variável de armazenamento do momento em que o processo é criado*/
+  clock_t tempo_criado; /*inicializa variavel temporaria para armazenar o tempo atual do clock*/
+  get_uptime(&tempo_criado); /*Funcao do sistema que obtem o tempo de clock no instante em que eh chamado*/
+  rpc->p_creation_time = tempo_criado; /*Inicializando a variavel de armazenamento do momento em que o processo eh criado*/
 
   rpc->p_misc_flags &=
 	~(MF_VIRT_TIMER | MF_PROF_TIMER | MF_SC_TRACE | MF_SPROF_SEEN | MF_STEP);
