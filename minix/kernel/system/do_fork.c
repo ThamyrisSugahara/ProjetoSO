@@ -14,6 +14,7 @@
 #include <signal.h>
 #include <string.h>
 #include <assert.h>
+#include "clock.h" //adicionando a clock.h para utilizacao da função get_uptime()
 
 #include <minix/endpoint.h>
 #include <minix/u64.h>
