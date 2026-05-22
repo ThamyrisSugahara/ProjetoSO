@@ -76,7 +76,7 @@ int do_fork(struct proc * caller, message * m_ptr)
   rpc->p_sys_time = 0;
   
   clock_t tempo_criado; /*inicializa variavel temporaria para armazenar o tempo atual do clock*/
-  tempo_criado = get_uptime(); /*Funcao do sistema que obtem o tempo de clock no instante em que eh chamado*/
+  tempo_criado = get_monotonic(); /*Funcao do sistema que obtem o tempo de clock no instante em que eh chamado*/
   rpc->p_creation_time = tempo_criado; /*Inicializando a variavel de armazenamento do momento em que o processo eh criado*/
 
   rpc->p_misc_flags &=
