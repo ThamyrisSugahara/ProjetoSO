@@ -1805,7 +1805,7 @@ static struct proc * pick_proc(void)
 		struct proc *comparado;
 
 		clock_t tempo_instante;
-		get_uptime(&tempo_instante);
+		tempo_instante = get_uptime();
 
 		for(comparado = rdy_head[q]; comparado != NULL; comparado = comparado->p_nextready){
 			//Tempo de vida do processo a ser comparado, ou seja, o tempo desde a sua criacao
