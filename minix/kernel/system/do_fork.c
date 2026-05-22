@@ -18,6 +18,8 @@
 #include <minix/endpoint.h>
 #include <minix/u64.h>
 
+#include "kernel/proto.h"   /* para get_monotonic */
+
 #if USE_FORK
 
 /*===========================================================================*
