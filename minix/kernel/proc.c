@@ -1649,7 +1649,7 @@ void enqueue(
   }
 #endif
 
-   rp->p_wait_time = get_monotonic;
+   rp->p_wait_time = get_monotonic();
    
   /* Make note of when this process was added to queue */
   read_tsc_64(&(get_cpulocal_var(proc_ptr)->p_accounting.enter_queue));
@@ -1817,7 +1817,7 @@ static struct proc * pick_proc(void)
 	return rp;
   }
 
-  for (q = USER_Q; Q < NR_SCHED_QUEUES; q++){
+  for (q = USER_Q; q < NR_SCHED_QUEUES; q++){
 	for (rp = rdy_head[q]; rp != NULL; rp = rp->p_nextready){
 		assert(proc_is_runnable(rp));
 
