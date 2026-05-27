@@ -27,8 +27,7 @@ struct proc {
   volatile u32_t p_rts_flags;	/* process is runnable only if zero */
   volatile u32_t p_misc_flags;	/* flags that do not suspend the process */
 
-  char p_priority;		/* current process priority */
-  clock_t p_wait_time; 
+  char p_priority;		/* current process priority */ 
   u64_t p_cpu_time_left;	/* time left to use the cpu */
   unsigned p_quantum_size_ms;	/* assigned time quantum in ms
 				   FIXME remove this */
@@ -59,6 +58,7 @@ struct proc {
 
   clock_t p_user_time;		/* user time in ticks */
   clock_t p_sys_time;		/* sys time in ticks */
+  clock_t p_wait_time; 
 
   clock_t p_virt_left;		/* number of ticks left on virtual timer */
   clock_t p_prof_left;		/* number of ticks left on profile timer */

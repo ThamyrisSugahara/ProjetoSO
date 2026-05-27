@@ -1606,7 +1606,6 @@ void enqueue(
  */
   int q = rp->p_priority;	 		/* scheduling queue to use */
   struct proc **rdy_head, **rdy_tail;
-  rp->p_wait_time = get_monotonic;
   
   assert(proc_is_runnable(rp));
 
@@ -1650,6 +1649,8 @@ void enqueue(
   }
 #endif
 
+   rp->p_wait_time = get_monotonic;
+   
   /* Make note of when this process was added to queue */
   read_tsc_64(&(get_cpulocal_var(proc_ptr)->p_accounting.enter_queue));
 
@@ -1792,7 +1793,11 @@ static struct proc * pick_proc(void)
  * This function always uses the run queues of the local cpu!
  */
   register struct proc *rp;			/* process to run */
+  struct proc *escolhido = NULL;
   struct proc **rdy_head;
+  clock_t tempo_espera;
+  clock_t tempo_ajustado;
+  clock_t escolhido_tempo_ajustado = 0;
   int q;				/* iterate over queues */
 
   /* Check each of the scheduling queues for ready processes. The number of
@@ -1800,7 +1805,8 @@ static struct proc * pick_proc(void)
    * If there are no processes ready to run, return NULL.
    */
   rdy_head = get_cpulocal_var(run_q_head);
-  for (q=0; q < NR_SCHED_QUEUES; q++) {	
+  
+  for (q=0; q < USER_Q; q++) {	
 	if(!(rp = rdy_head[q])) {
 		TRACE(VF_PICKPROC, printf("cpu %d queue %d empty\n", cpuid, q););
 		continue;
@@ -1810,7 +1816,28 @@ static struct proc * pick_proc(void)
 		get_cpulocal_var(bill_ptr) = rp; /* bill for system time */
 	return rp;
   }
-  return NULL;
+
+  for (q = USER_Q; Q < NR_SCHED_QUEUES; q++){
+	for (rp = rdy_head[q]; rp != NULL; rp = rp->p_nextready){
+		assert(proc_is_runnable(rp));
+
+		tempo_espera = get_monotonic() - rp->p_wait_time;
+		tempo_ajustado = (rp->p_user_time > tempo_espera) ? rp->p_user_time - tempo_espera : 0;
+
+		if (escolhido == NULL || tempo_ajustado < escolhido_tempo_ajustado){
+			escolhido = rp;
+			escolhido_tempo_ajustado = tempo_ajustado;
+		}
+	}
+  }
+
+  if(escolhido == NULL)
+  	return NULL;
+
+  if(priv(escolhido)->s_flags & BILLABLE)
+  	get_cpulocal_var(bill_ptr) = escolhido;	
+
+  return escolhido;
 }
 
 /*===========================================================================*
