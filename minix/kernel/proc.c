@@ -1817,13 +1817,16 @@ static struct proc * pick_proc(void)
 	return rp;
   }
 
+  /* Processos de usuario: Shortest Process Next com aging */ 
   for (q = USER_Q; q < NR_SCHED_QUEUES; q++){
 	for (rp = rdy_head[q]; rp != NULL; rp = rp->p_nextready){
 		assert(proc_is_runnable(rp));
 
+		/* Desconta tempo de espera do tempo consumido (aging) */ 
 		tempo_espera = get_monotonic() - rp->p_wait_time;
 		tempo_ajustado = (rp->p_user_time > tempo_espera) ? rp->p_user_time - tempo_espera : 0;
 
+		/* Processo com menor tempo ajustado sera o escolhido */
 		if (escolhido == NULL || tempo_ajustado < escolhido_tempo_ajustado){
 			escolhido = rp;
 			escolhido_tempo_ajustado = tempo_ajustado;
@@ -1834,6 +1837,7 @@ static struct proc * pick_proc(void)
   if(escolhido == NULL)
   	return NULL;
 
+  /* Registra contabilidade e retorna o processo escolhido */ 
   if(priv(escolhido)->s_flags & BILLABLE)
   	get_cpulocal_var(bill_ptr) = escolhido;	
 

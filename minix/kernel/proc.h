@@ -58,7 +58,7 @@ struct proc {
 
   clock_t p_user_time;		/* user time in ticks */
   clock_t p_sys_time;		/* sys time in ticks */
-  clock_t p_wait_time; 
+  clock_t p_wait_time;      /* tempo de entrada na fila */
 
   clock_t p_virt_left;		/* number of ticks left on virtual timer */
   clock_t p_prof_left;		/* number of ticks left on profile timer */
