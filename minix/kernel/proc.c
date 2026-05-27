@@ -1606,6 +1606,7 @@ void enqueue(
  */
   int q = rp->p_priority;	 		/* scheduling queue to use */
   struct proc **rdy_head, **rdy_tail;
+  rp->p_wait_time = get_monotonic;
   
   assert(proc_is_runnable(rp));
 
